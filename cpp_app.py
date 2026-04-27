@@ -41,14 +41,14 @@ FACULTAD = pd.DataFrame(tabla_cpp['FACULTAD'].unique()).dropna()
 
 #tabla_ret_largo_filtrado_carr=tabla_ret_largo_carr[(tabla_ret_largo_carr['CODIGO_CARRERA_x']==ret_sel_carr)]
 
-sel=st.selectbox("Selecciona el código a visualizar:", 
+sel=st.selectbox("Selecciona el programa a visualizar:", 
          list(tabla_cpp['COD_PLAN'].unique()))
 
 
 
 tabla_filtrada_2=tabla_cpp[(tabla_cpp['COD_PLAN']==sel)]
 
-sel_2=st.selectbox("Selecciona el código a visualizar:", 
+sel_2=st.selectbox("Selecciona el código SIES a visualizar:", 
          list(tabla_filtrada_2['SIES'].unique()))
 
 tabla_filtrada_3=tabla_cpp[(tabla_cpp['COD_PLAN']==sel) & (tabla_cpp['SIES']==sel_2)]
