@@ -8,7 +8,7 @@ tabla_cpp = pd.read_csv("CPP_DR.csv")
 
 tabla_cpp = tabla_cpp.drop_duplicates()
 
-st.title("CPP")
+st.title("CPP 2026 - Planes de estudio")
 
 #tabla_cpp.columns
 tabla_cpp=tabla_cpp[['ID', 
