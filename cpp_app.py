@@ -8,7 +8,7 @@ tabla_cpp = pd.read_csv("CPP_DR.csv")
 
 tabla_cpp = tabla_cpp.drop_duplicates()
 
-st.title("CPP 2026 - Planes de estudio")
+st.title("CPP 2026 - Planes de estudios")
 
 tabla_cpp['nivel_global'] = np.where(tabla_cpp['COD_CARRERA']=="UNICIT", "UNICIT",
     np.where(tabla_cpp['COD_CARRERA']=="MIDA", "MAGISTER",
@@ -56,6 +56,7 @@ else:
 #tabla_ret_largo_filtrado_carr=tabla_ret_largo_carr[(tabla_ret_largo_carr['CODIGO_CARRERA_x']==ret_sel_carr)]
 
 #tabla_cpp['COD_PLAN'].isin(seleccion).unique()
+#dsds
 
 sel=st.selectbox("Selecciona el programa a visualizar:", 
          list(tabla_filtrada['COD_PLAN'].unique()))
