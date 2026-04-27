@@ -52,7 +52,7 @@ else:
     tabla_filtrada = tabla_cpp
     
     
-seleccion_car = st.multiselect("Selecciona carrera:", tabla_filtrada['nivel_global'].unique(), default=tabla_filtrada['nivel_global'].unique())
+seleccion_car = st.multiselect("Selecciona nivel:", tabla_filtrada['nivel_global'].unique(), default=tabla_filtrada['nivel_global'].unique())
 
 
 
