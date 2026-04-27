@@ -97,7 +97,7 @@ else:
  #   tabla_cpp[tabla_cpp['FACULTAD'].isin(seleccion)]
 
 #st.write(tabla_filtrada_3['COD_PLAN'].value_counts())
-st.write("se cuentan " + str(len(tabla_filtrada_3['SIES'])) + " registros de este programa")
+#st.write("se cuentan " + str(len(tabla_filtrada_3['SIES'])) + " registros de este programa")
 st.info(f"Se cuentan {len(tabla_filtrada_3)} registros de este programa")
 
 
