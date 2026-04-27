@@ -50,6 +50,16 @@ if seleccion:
     tabla_filtrada = tabla_cpp[tabla_cpp['FACULTAD'].isin(seleccion)]
 else:    
     tabla_filtrada = tabla_cpp
+    
+    
+seleccion_car = st.multiselect("Selecciona carrera:", tabla_filtrada['nivel_global'].unique(), default=tabla_filtrada['nivel_global'].unique())
+
+
+
+if seleccion:
+    tabla_filtrada_niv = tabla_cpp[tabla_cpp['nivel_global'].isin(seleccion_car)]
+else:    
+    tabla_filtrada_niv = tabla_cpp
 
 #tabla_filtrada_2 = tabla_cpp[tabla_cpp['FACULTAD'].isin(seleccion)]
 
@@ -59,7 +69,7 @@ else:
 #dsds
 
 sel=st.selectbox("Selecciona el programa a visualizar:", 
-         list(tabla_filtrada['COD_PLAN'].unique()))
+         list(tabla_filtrada_niv['COD_PLAN'].unique()))
 
 tabla_filtrada_2=tabla_cpp[(tabla_cpp['COD_PLAN']==sel)]
 
