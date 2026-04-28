@@ -57,7 +57,7 @@ seleccion_car = st.multiselect("Selecciona nivel:", tabla_filtrada['nivel_global
 
 
 if seleccion:
-    tabla_filtrada_niv = tabla_cpp[tabla_cpp['nivel_global'].isin(seleccion_car)]
+    tabla_filtrada_niv = tabla_filtrada[tabla_filtrada['nivel_global'].isin(seleccion_car)]
 else:    
     tabla_filtrada_niv = tabla_cpp
 
@@ -66,7 +66,7 @@ else:
 #tabla_ret_largo_filtrado_carr=tabla_ret_largo_carr[(tabla_ret_largo_carr['CODIGO_CARRERA_x']==ret_sel_carr)]
 
 #tabla_cpp['COD_PLAN'].isin(seleccion).unique()
-#dsds
+#dsdshghgh
 
 sel=st.selectbox("Selecciona el programa a visualizar:", 
          list(tabla_filtrada_niv['COD_PLAN'].unique()))
