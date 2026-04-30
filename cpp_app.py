@@ -73,8 +73,13 @@ sel=st.selectbox("Selecciona el programa a visualizar:",
 
 tabla_filtrada_2=tabla_cpp[(tabla_cpp['COD_PLAN']==sel)]
 
+
+
 sel_2=st.selectbox("Selecciona el código SIES a visualizar:", 
          list(tabla_filtrada_2['SIES'].unique()))
+
+#sel_3=st.selectbox("Selecciona el programa a visualizar:", 
+ #        list(tabla_filtrada_niv['PLAN_NOMBRE'].unique()))
 
 tabla_filtrada_3=tabla_cpp[(tabla_cpp['COD_PLAN']==sel) & (tabla_cpp['SIES']==sel_2) & (tabla_cpp['FACULTAD'].isin(seleccion))]
 
