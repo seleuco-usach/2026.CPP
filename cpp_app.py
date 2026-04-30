@@ -35,16 +35,24 @@ tabla_cpp=tabla_cpp[['ID',
 
 
 tabla_cpp['COD_PLAN'] = tabla_cpp['COD_PLAN'].astype(str)
+tabla_cpp['FACULTAD'] = tabla_cpp['FACULTAD'].replace("Facultad de ", "", regex=True)
+tabla_cpp['COD_PLAN_NOMBRE'] = tabla_cpp['COD_PLAN'].astype(str) +"-"+ tabla_cpp['PLAN_NOMBRE']
+
 
 st.set_page_config(layout="wide")
 
 programas = pd.DataFrame(tabla_cpp['COD_PLAN'].unique()).dropna()
+programas_nombre = pd.DataFrame(tabla_cpp['COD_PLAN_NOMBRE'].unique()).dropna()
 FACULTAD = pd.DataFrame(tabla_cpp['FACULTAD'].unique()).dropna()
+
+
 
 #prog_sel = st.multiselect("Selecciona programa:", programas, default=programas)
 #fac_sel = st.multiselect("Selecciona carrera:", FACULTAD, default=FACULTAD)
 
-seleccion = st.multiselect("Selecciona facultad:", tabla_cpp['FACULTAD'].unique(), default=FACULTAD)
+seleccion = st.multiselect("Selecciona facultad:", 
+                                   tabla_cpp['FACULTAD'].unique(), 
+                                   default=FACULTAD)
 
 if seleccion:
     tabla_filtrada = tabla_cpp[tabla_cpp['FACULTAD'].isin(seleccion)]
@@ -52,12 +60,14 @@ else:
     tabla_filtrada = tabla_cpp
     
     
-seleccion_car = st.multiselect("Selecciona nivel:", tabla_filtrada['nivel_global'].unique(), default=tabla_filtrada['nivel_global'].unique())
+seleccion_car = st.multiselect("Selecciona nivel:", 
+                               tabla_filtrada['nivel_global'].unique(), 
+                               default=tabla_filtrada['nivel_global'].unique())
 
 
 
 if seleccion:
-    tabla_filtrada_niv = tabla_cpp[tabla_cpp['nivel_global'].isin(seleccion_car)]
+    tabla_filtrada_niv = tabla_filtrada[tabla_filtrada['nivel_global'].isin(seleccion_car)]
 else:    
     tabla_filtrada_niv = tabla_cpp
 
@@ -66,22 +76,21 @@ else:
 #tabla_ret_largo_filtrado_carr=tabla_ret_largo_carr[(tabla_ret_largo_carr['CODIGO_CARRERA_x']==ret_sel_carr)]
 
 #tabla_cpp['COD_PLAN'].isin(seleccion).unique()
-#dsds
+#dsdshghgh
 
 sel=st.selectbox("Selecciona el programa a visualizar:", 
-         list(tabla_filtrada_niv['COD_PLAN'].unique()))
+         list(tabla_filtrada_niv['COD_PLAN_NOMBRE'].unique()), 
+         index=None, 
+         placeholder="selecciona programa")
 
-tabla_filtrada_2=tabla_cpp[(tabla_cpp['COD_PLAN']==sel)]
-
-
+tabla_filtrada_2=tabla_cpp[(tabla_cpp['COD_PLAN_NOMBRE']==sel)]
 
 sel_2=st.selectbox("Selecciona el código SIES a visualizar:", 
          list(tabla_filtrada_2['SIES'].unique()))
 
-#sel_3=st.selectbox("Selecciona el programa a visualizar:", 
- #        list(tabla_filtrada_niv['PLAN_NOMBRE'].unique()))
-
-tabla_filtrada_3=tabla_cpp[(tabla_cpp['COD_PLAN']==sel) & (tabla_cpp['SIES']==sel_2) & (tabla_cpp['FACULTAD'].isin(seleccion))]
+tabla_filtrada_3=tabla_cpp[(tabla_cpp['COD_PLAN_NOMBRE']==sel) & 
+                           (tabla_cpp['SIES']==sel_2) & 
+                           (tabla_cpp['FACULTAD'].isin(seleccion))]
 
 
     
@@ -103,7 +112,12 @@ else:
 
 #st.write(tabla_filtrada_3['COD_PLAN'].value_counts())
 #st.write("se cuentan " + str(len(tabla_filtrada_3['SIES'])) + " registros de este programa")
+
+facultad_sel = tabla_filtrada_3['FACULTAD'].unique()
+depto_sel = tabla_filtrada_3['nombre_depto_cr'].unique()
+
 st.info(f"Se cuentan {len(tabla_filtrada_3)} registros de este programa")
+st.info(f"programa pertenece a {', '.join(facultad_sel)} del {', '.join(depto_sel)} ")
 
 
 
