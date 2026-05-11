@@ -95,11 +95,16 @@ tabla_filtrada_3=tabla_cpp[(tabla_cpp['COD_PLAN_NOMBRE']==sel) &
 
     
 
-if sel == "TODOS":
-    tabla_cpp
+if not sel:
+    tabla_final = tabla_filtrada_niv
 else:
-    tabla_filtrada_3
+    tabla_final = tabla_filtrada_3
     
+tab1, tab2 = st.tabs(["programas planes", "estadístcias cpp"])
+
+with tab1:
+    st.dataframe(tabla_final, use_container_width=True)
+
 
 #if sel != "TODOS":
  #   tabla_cpp[tabla_cpp['COD_PLAN']==sel]
