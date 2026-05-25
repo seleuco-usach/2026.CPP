@@ -50,6 +50,7 @@ FACULTAD = pd.DataFrame(tabla_cpp['FACULTAD'].unique()).dropna()
 #prog_sel = st.multiselect("Selecciona programa:", programas, default=programas)
 #fac_sel = st.multiselect("Selecciona carrera:", FACULTAD, default=FACULTAD)
 
+    
 seleccion = st.multiselect("Selecciona facultad:", 
                                    tabla_cpp['FACULTAD'].unique(), 
                                    default=FACULTAD)
