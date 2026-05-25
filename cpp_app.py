@@ -8,6 +8,8 @@ tabla_cpp = pd.read_csv("CPP_DR.csv")
 
 tabla_cpp = tabla_cpp.drop_duplicates()
 
+
+
 st.title("CPP 2026 - Planes de estudios")
 
 tabla_cpp['nivel_global'] = np.where(tabla_cpp['COD_CARRERA']=="UNICIT", "UNICIT",
@@ -15,9 +17,9 @@ tabla_cpp['nivel_global'] = np.where(tabla_cpp['COD_CARRERA']=="UNICIT", "UNICIT
     np.where(tabla_cpp['COD_CARRERA'].str[0:3]=="MAG","MAGISTER", 
     np.where(tabla_cpp['COD_CARRERA'].str[0:3]=="DOC","DOCTORADO",
     np.where(tabla_cpp['COD_CARRERA'].str[0:3]=="DIP","DIPLOMADO",
-    np.where(tabla_cpp['COD_CARRERA'].str[0:3]=="POS","POSTITUTLO","PREGRADO"))))))
+    np.where(tabla_cpp['COD_CARRERA'].str[0:3]=="POS","POSTITULO","PREGRADO"))))))
 
-#tabla_cpp.columns
+#tabla_cpp.columnsD
 tabla_cpp=tabla_cpp[['ID', 
            'ANHO_SIES',
            'COD_PLAN', 
@@ -38,7 +40,11 @@ tabla_cpp['COD_PLAN'] = tabla_cpp['COD_PLAN'].astype(str)
 tabla_cpp['FACULTAD'] = tabla_cpp['FACULTAD'].replace("Facultad de ", "", regex=True)
 tabla_cpp['COD_PLAN_NOMBRE'] = tabla_cpp['COD_PLAN'].astype(str) +"-"+ tabla_cpp['PLAN_NOMBRE']
 
+tabla_cpp['COD_PLAN_NOMBRE'] = tabla_cpp['COD_PLAN_NOMBRE'].str.strip()
 
+reemplazos = {"Á": "A", "É": "E", "Í": "I", "Ó": "O", "Ú": "U"}
+
+tabla_cpp['COD_PLAN_NOMBRE'] = tabla_cpp['COD_PLAN_NOMBRE'].replace(reemplazos, regex=True)
 st.set_page_config(layout="wide")
 
 programas = pd.DataFrame(tabla_cpp['COD_PLAN'].unique()).dropna()
@@ -122,6 +128,8 @@ with tab1:
 facultad_sel = tabla_filtrada_3['FACULTAD'].unique()
 depto_sel = tabla_filtrada_3['nombre_depto_cr'].unique()
 
+st.info(f"Se cuentan {len(tabla_filtrada_niv)} registros")
+st.info(f"Se cuentan {len(tabla_filtrada_niv['COD_PLAN'].drop_duplicates())} planes únicos")
 st.info(f"Se cuentan {len(tabla_filtrada_3)} registros de este programa")
 st.info(f"programa pertenece a {', '.join(facultad_sel)} del {', '.join(depto_sel)} ")
 
