@@ -4,30 +4,47 @@ import numpy as np
 
 st.set_page_config(layout="wide")
 
-tabla_cpp = pd.read_csv("CPP_DR.csv")
+@st.cache_data
+def cargar_cpp():
+    tabla_cpp = pd.read_csv("CPP_DR.csv")
+    tabla_cpp = tabla_cpp.drop_duplicates()
+    return tabla_cpp
 
-tabla_cpp = tabla_cpp.drop_duplicates()
+tabla_cpp = cargar_cpp()
 
 from io import BytesIO
 import requests
 import pandas as pd
 
-oa_2026 = "https://mifuturo.cl/wp-content/uploads/2026/01/Oferta_Academica_2010_al_2026_SIES_12_01_2026_WEB_E.zip"
+@st.cache_data
+def cargar_oferta():
+    oa_2026 = "https://mifuturo.cl/wp-content/uploads/2026/01/Oferta_Academica_2010_al_2026_SIES_12_01_2026_WEB_E.zip"
+    result = requests.get(oa_2026)
+    oa_histo = pd.read_csv(BytesIO(result.content),compression='zip', 
+                     header=0, sep=';', 
+                     quotechar='"', 
+                     encoding='latin-1')
+    return oa_histo
 
-result = requests.get(oa_2026)
-oa_histo = pd.read_csv(BytesIO(result.content),compression='zip', 
-                 header=0, sep=';', 
-                 quotechar='"', 
-                 encoding='latin-1')
+oa_histo = cargar_oferta()
+#oa_2026 = "https://mifuturo.cl/wp-content/uploads/2026/01/Oferta_Academica_2010_al_2026_SIES_12_01_2026_WEB_E.zip"
+
+# result = requests.get(oa_2026)
+# oa_histo = pd.read_csv(BytesIO(result.content),compression='zip', 
+#                  header=0, sep=';', 
+#                  quotechar='"', 
+#                  encoding='latin-1')
 
 
 
 oa_usach = oa_histo[oa_histo['Código IES']==71]
 oa_usach['Año'] = oa_usach['Año'].str.replace("OFE_", "", regex=False)
 
-oa_usach_col = oa_usach[['Año','Código Único','Nombre Carrera','Código Carrera','Duración Total','Vigencia']]
+oa_usach_col = oa_usach[['Año','Código Único','Código Carrera','Vigencia']]
 
 oa_usach_col['id'] = oa_usach_col['Año'] +'-'+ oa_usach_col['Código Único']
+
+oa_usach_col.drop(columns=['Año','Código Único'], inplace=True)
 
 st.title("CPP 2026 - Planes de estudios")
 
@@ -156,6 +173,6 @@ st.info(f"programa pertenece a {', '.join(facultad_sel)} del {', '.join(depto_se
 
 #tabla_filtrada
 #tabla_filtrada_2
+
 with tab3:
-    st.write("Oferta académica SIES")
     st.dataframe(oa_usach_col, use_container_width=True)
