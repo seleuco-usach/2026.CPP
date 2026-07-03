@@ -12,9 +12,6 @@ from io import BytesIO
 import requests
 import pandas as pd
 
-
-
-
 oa_2026 = "https://mifuturo.cl/wp-content/uploads/2026/01/Oferta_Academica_2010_al_2026_SIES_12_01_2026_WEB_E.zip"
 
 result = requests.get(oa_2026)
@@ -30,7 +27,11 @@ oa_usach['Año'] = oa_usach['Año'].str.replace("OFE_", "", regex=False)
 
 oa_usach_col = oa_usach[['Año','Código Único','Nombre Carrera','Código Carrera','Duración Total','Vigencia']]
 
+oa_usach_col['id'] = oa_usach_col['Año'] +'-'+ oa_usach_col['Código Único']
+
 st.title("CPP 2026 - Planes de estudios")
+
+tabla_cpp = tabla_cpp.merge(oa_usach_col[['id','Vigencia']], left_on='ANHO_SIES', right_on='id', how='left')
 
 tabla_cpp['nivel_global'] = np.where(tabla_cpp['COD_CARRERA']=="UNICIT", "UNICIT",
     np.where(tabla_cpp['COD_CARRERA']=="MIDA", "MAGISTER",
@@ -51,7 +52,7 @@ tabla_cpp=tabla_cpp[['ID',
            'COD_FAC',
            'FACULTAD',
            'COD_DEPTO_2_CR', 
-           'nombre_depto_cr']]
+           'nombre_depto_cr', 'Vigencia']]
 
 
 
@@ -152,14 +153,6 @@ st.info(f"Se cuentan {len(tabla_filtrada_niv['COD_PLAN'].drop_duplicates())} pla
 st.info(f"Se cuentan {len(tabla_filtrada_3)} registros de este programa")
 st.info(f"programa pertenece a {', '.join(facultad_sel)} del {', '.join(depto_sel)} ")
 
-with tab2:
-    st.write("estadísticas de este programa")
-    st.write(tabla_filtrada_3['nivel_global'].value_counts())
-    st.write(tabla_filtrada_3['ANHO_PLAN'].value_counts())
-    st.write(tabla_filtrada_3['SIES'].value_counts())
-    st.write(tabla_filtrada_3['COD_CARRERA'].value_counts())
-    st.write(tabla_filtrada_3['FACULTAD'].value_counts())
-    st.write(tabla_filtrada_3['nombre_depto_cr'].value_counts())
 
 #tabla_filtrada
 #tabla_filtrada_2
