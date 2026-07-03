@@ -8,7 +8,27 @@ tabla_cpp = pd.read_csv("CPP_DR.csv")
 
 tabla_cpp = tabla_cpp.drop_duplicates()
 
+from io import BytesIO
+import requests
+import pandas as pd
 
+
+
+
+oa_2026 = "https://mifuturo.cl/wp-content/uploads/2026/01/Oferta_Academica_2010_al_2026_SIES_12_01_2026_WEB_E.zip"
+
+result = requests.get(oa_2026)
+oa_histo = pd.read_csv(BytesIO(result.content),compression='zip', 
+                 header=0, sep=';', 
+                 quotechar='"', 
+                 encoding='latin-1')
+
+
+
+oa_usach = oa_histo[oa_histo['Código IES']==71]
+oa_usach['Año'] = oa_usach['Año'].str.replace("OFE_", "", regex=False)
+
+oa_usach_col = oa_usach[['Año','Código Único','Nombre Carrera','Código Carrera','Duración Total','Vigencia']]
 
 st.title("CPP 2026 - Planes de estudios")
 
@@ -101,13 +121,12 @@ tabla_filtrada_3=tabla_cpp[(tabla_cpp['COD_PLAN_NOMBRE']==sel) &
 
 
     
-
 if not sel:
     tabla_final = tabla_filtrada_niv
 else:
     tabla_final = tabla_filtrada_3
     
-tab1, tab2 = st.tabs(["programas planes", "estadístcias cpp"])
+tab1, tab2, tab3 = st.tabs(["programas planes", "estadístcias cpp", "Oferta académica"])
 
 with tab1:
     st.dataframe(tabla_final, use_container_width=True)
@@ -133,7 +152,17 @@ st.info(f"Se cuentan {len(tabla_filtrada_niv['COD_PLAN'].drop_duplicates())} pla
 st.info(f"Se cuentan {len(tabla_filtrada_3)} registros de este programa")
 st.info(f"programa pertenece a {', '.join(facultad_sel)} del {', '.join(depto_sel)} ")
 
-
+with tab2:
+    st.write("estadísticas de este programa")
+    st.write(tabla_filtrada_3['nivel_global'].value_counts())
+    st.write(tabla_filtrada_3['ANHO_PLAN'].value_counts())
+    st.write(tabla_filtrada_3['SIES'].value_counts())
+    st.write(tabla_filtrada_3['COD_CARRERA'].value_counts())
+    st.write(tabla_filtrada_3['FACULTAD'].value_counts())
+    st.write(tabla_filtrada_3['nombre_depto_cr'].value_counts())
 
 #tabla_filtrada
 #tabla_filtrada_2
+with tab3:
+    st.write("Oferta académica SIES")
+    st.dataframe(oa_usach_col, use_container_width=True)
