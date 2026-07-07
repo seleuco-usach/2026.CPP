@@ -18,15 +18,20 @@ import pandas as pd
 
 @st.cache_data
 def cargar_oferta():
-    oa_2026 = "https://mifuturo.cl/wp-content/uploads/2026/01/Oferta_Academica_2010_al_2026_SIES_12_01_2026_WEB_E.zip"
-    result = requests.get(oa_2026)
-    oa_histo = pd.read_csv(BytesIO(result.content),compression='zip', 
-                     header=0, sep=';', 
-                     quotechar='"', 
-                     encoding='latin-1')
-    return oa_histo
+    oa_usach = pd.read_excel("OA_2026.xlsx")
+    return oa_usach
+# def cargar_oferta():
+#     oa_2026 = "https://mifuturo.cl/wp-content/uploads/2026/01/Oferta_Academica_2010_al_2026_SIES_12_01_2026_WEB_E.zip"
+#     result = requests.get(oa_2026)
+#     oa_histo = pd.read_csv(BytesIO(result.content),compression='zip', 
+#                      header=0, sep=';', 
+#                      quotechar='"', 
+#                      encoding='latin-1')
+#     return oa_histo
 
-oa_histo = cargar_oferta()
+
+
+oa_usach = cargar_oferta()
 #oa_2026 = "https://mifuturo.cl/wp-content/uploads/2026/01/Oferta_Academica_2010_al_2026_SIES_12_01_2026_WEB_E.zip"
 
 # result = requests.get(oa_2026)
@@ -37,7 +42,7 @@ oa_histo = cargar_oferta()
 
 
 
-oa_usach = oa_histo[oa_histo['Código IES']==71]
+#oa_usach = oa_histo[oa_histo['Código IES']==71]
 oa_usach['Año'] = oa_usach['Año'].str.replace("OFE_", "", regex=False)
 
 oa_usach_col = oa_usach[['Año','Código Único','Código Carrera','Vigencia']]
