@@ -18,7 +18,7 @@ import pandas as pd
 
 @st.cache_data
 def cargar_oferta():
-    oa_usach = pd.read_excel("OA_2026.xlsx")
+    oa_usach = pd.read_csv("OA_2026.csv", sep=";")
     return oa_usach
 # def cargar_oferta():
 #     oa_2026 = "https://mifuturo.cl/wp-content/uploads/2026/01/Oferta_Academica_2010_al_2026_SIES_12_01_2026_WEB_E.zip"
