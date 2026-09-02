@@ -6,7 +6,7 @@ st.set_page_config(layout="wide")
 
 @st.cache_data
 def cargar_cpp():
-    tabla_cpp = pd.read_csv("CPP_DR.csv")
+    tabla_cpp = pd.read_csv("CPP_DR_2026.csv")
     tabla_cpp = tabla_cpp.drop_duplicates()
     return tabla_cpp
 
