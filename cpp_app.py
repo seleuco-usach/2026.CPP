@@ -31,6 +31,7 @@ def cargar_oferta():
 
 
 
+
 oa_usach = cargar_oferta()
 #oa_2026 = "https://mifuturo.cl/wp-content/uploads/2026/01/Oferta_Academica_2010_al_2026_SIES_12_01_2026_WEB_E.zip"
 
